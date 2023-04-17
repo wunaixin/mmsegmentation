@@ -54,8 +54,6 @@ class PPM(nn.ModuleList):
                 ppm_out,
                 size=x.size()[2:],
                 mode='bilinear',
-                # mode='nearest',       #bm
-                # mode='linear',       #bm
                 align_corners=self.align_corners)
             ppm_outs.append(upsampled_ppm_out)
         return ppm_outs

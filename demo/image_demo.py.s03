@@ -31,9 +31,8 @@ def main():
     if args.device == 'cpu':
         model = revert_sync_batchnorm(model)
         
-    #bm -----------------------
+    #bm
     from mmseg.apis.inference import _preprare_data
-    pdb.set_trace()
     data, is_batch = _preprare_data(args.img, model)
     data2 = model.data_preprocessor(data, False)
     
@@ -43,49 +42,39 @@ def main():
     backbone = poptorch.inferenceModel(model.backbone, opts)
     # feats = backbone(data2['inputs'])    #ok, but need to wait for compiling
     feats = []
-    # # feats.append(torch.rand([1, 96, 128, 256]))
-    # # feats.append(torch.rand([1, 192, 64, 128]))
-    # # feats.append(torch.rand([1, 384, 32, 64]))
-    # # feats.append(torch.rand([1, 768, 16, 32]))
-    feats.append(torch.rand([1, 96, 144, 288]))
-    feats.append(torch.rand([1, 192, 72, 144]))
-    feats.append(torch.rand([1, 384, 36, 72]))
-    feats.append(torch.rand([1, 768, 18, 36]))
-    # # feats.append(torch.rand([1, 96, 144, 144]))
-    # # feats.append(torch.rand([1, 192, 72, 72]))
-    # # feats.append(torch.rand([1, 384, 36, 36]))
-    # # feats.append(torch.rand([1, 768, 18, 18]))
-    # # feats.append(torch.rand([1, 96, 144, 144]))
-    # # feats.append(torch.rand([1, 192, 72, 72]))
-    # # feats.append(torch.rand([1, 384, 36, 36]))
-    # # feats.append(torch.rand([1, 768, 18, 18]))
-    # # feats.append(torch.rand([1, 96, 96, 96]))
-    # # feats.append(torch.rand([1, 192, 48, 48]))
-    # # feats.append(torch.rand([1, 384, 24, 24]))
-    # # feats.append(torch.rand([1, 768, 12, 12]))
-    # feats.append(torch.rand([1, 96, 48, 48]))
-    # feats.append(torch.rand([1, 192, 24, 24]))
-    # feats.append(torch.rand([1, 384, 12, 12]))
-    # feats.append(torch.rand([1, 768, 6, 6]))
-    
+    # feats.append(torch.rand([1, 96, 128, 256]))
+    # feats.append(torch.rand([1, 192, 64, 128]))
+    # feats.append(torch.rand([1, 384, 32, 64]))
+    # feats.append(torch.rand([1, 768, 16, 32]))
+    # feats.append(torch.rand([1, 96, 144, 288]))
+    # feats.append(torch.rand([1, 192, 72, 144]))
+    # feats.append(torch.rand([1, 384, 36, 72]))
+    # feats.append(torch.rand([1, 768, 18, 36]))
+    # feats.append(torch.rand([1, 96, 144, 144]))
+    # feats.append(torch.rand([1, 192, 72, 72]))
+    # feats.append(torch.rand([1, 384, 36, 36]))
+    # feats.append(torch.rand([1, 768, 18, 18]))
+    # feats.append(torch.rand([1, 96, 144, 144]))
+    # feats.append(torch.rand([1, 192, 72, 72]))
+    # feats.append(torch.rand([1, 384, 36, 36]))
+    # feats.append(torch.rand([1, 768, 18, 18]))
+    # feats.append(torch.rand([1, 96, 96, 96]))
+    # feats.append(torch.rand([1, 192, 48, 48]))
+    # feats.append(torch.rand([1, 384, 24, 24]))
+    # feats.append(torch.rand([1, 768, 12, 12]))
+    feats.append(torch.rand([1, 96, 48, 48]))
+    feats.append(torch.rand([1, 192, 24, 24]))
+    feats.append(torch.rand([1, 384, 12, 12]))
+    feats.append(torch.rand([1, 768, 6, 6]))
     pdb.set_trace()
     decode_head = poptorch.inferenceModel(model.decode_head, opts)
-    seg_logits = decode_head(feats)
-    from mmseg.models.decode_heads.decode_head import resize
-    seg_logits = resize(
-        input=seg_logits,
-        size=(512, 1024),
-        mode='bilinear',
-        align_corners=False)
-    result = model.postprocess_result(seg_logits, data2['data_samples'])
-    result = result[0]
-    pdb.set_trace()
+    # decode_head(feats)
+
 
     # test a single image
-    # result = inference_model(model, args.img)
+    result = inference_model(model, args.img)
     
     # show the results
-    # show_result_pyplot(model, args.img, result, title=args.title, opacity=args.opacity, draw_gt=False, show=False, out_file=args.out_file)  #bm
     show_result_pyplot(
         model,
         args.img,
@@ -96,7 +85,6 @@ def main():
         show=False if args.out_file is not None else True,
         out_file=args.out_file)
 
-    pdb.set_trace()
 
 if __name__ == '__main__':
     main()
